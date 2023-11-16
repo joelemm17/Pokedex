@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="#">
+    <title>Document</title>
+</head>
+<body>
+    <div id="main">
+
+        <div id="poke-search">
+            <select id="search-select">
+                <option value="name">Name</option>
+                <option value="poke-id">ID</option>
+            </select>
+            <input id="poke-input" type="text">
+        </div>
+        <div id="name-drop"></div>
+        <button id="poke-button" onclick="catchPokemon()">Get That Pokemon!</button>
+        <div id="pokedex">
+            <div id="pokedex-left">
+                <div id="top-panel">
+                    <img id="lens" src="./imgs/lens2.webp" alt="">
+                    <div class="big-light poke-light red"></div>
+                    <div class="big-light poke-light yellow"></div>
+                    <div class="big-light poke-light green"></div>
+                </div>
+                <div id="mid-panel">
+                    <div id="info-screen">
+                        <div id="screen-top">
+                            <div id="scroll-light-left" class="poke-light red"></div>
+                            <div class="poke-light red"></div>
+                        </div>
+                        <div id="screen">
+                        </div>
+                        <div id="screen-bottom">
+                            <div class="poke-light red"></div>
+                            <div id="vent">
+                                <div class="line"></div>
+                                <div class="line"></div>
+                                <div class="line"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="bottom-panel">
+                    <div id="bot-left">
+                        <button onclick="narrate()" id="audio-button">🔊</button>
+                    </div>
+                    <div id="bot-mid">
+                        <div id="button-panel">
+                            <button onclick="changeVoice()" class="bar-light dark-red"><p>Change Voice</p></button>
+                            <button class="bar-light blue"></button>
+                        </div>
+                        <div id="lcd">
+                
+                        </div>
+                    </div>
+                    <div id="bot-right">
+                        <button onclick="arrowUp()"class="direction-arrow">⬆</button>
+                        <div id="dpad-mid">
+                            <button onclick="picLeft()" class="direction-arrow">⬅</button>
+                            <button class="center-arrow">⚫</button>
+                            <button onclick="picRight()" class="direction-arrow">➡</button>
+                        </div>
+                        <button onclick="arrowDown()" class="direction-arrow">⬇</button>
+                    </div>
+                </div>
+            </div>
+            <div id="hinge">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+            <div id="pokedex-right">
+                <div id="top-bevel"></div>
+                <div id="right-lcd"></div>
+                <div id="blue-button-panel">
+                    <div class="button-row">
+                        <button class="blue-button"></button>
+                        <button class="blue-button"></button>
+                        <button class="blue-button"></button>
+                        <button class="blue-button"></button>
+                        <button class="blue-button"></button>
+                    </div>
+                    <div class="button-row">
+                        <button class="blue-button"></button>
+                        <button class="blue-button"></button>
+                        <button class="blue-button"></button>
+                        <button class="blue-button"></button>
+                        <button class="blue-button"></button>
+                    </div>
+                </div>
+                <div id="mid-right">
+                    <div id="white-buttons">
+                        <button class="white-button"></button>
+                        <button class="white-button"></button>
+                    </div>
+                    <div id="mid-right-right">
+                        <div id="black-buttons">
+                            <button class="black-button"></button>
+                            <button class="black-button"></button>
+                        </div>
+                        <button onclick="savePokemon()" class="yellow-button"></button>
+                    </div>
+                </div>
+                <div id="bottom-right">
+                    <div id="prev-screen" class="small-lcd"></div>
+                    <div id="next-screen" class="small-lcd"></div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
