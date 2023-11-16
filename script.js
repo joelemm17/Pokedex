@@ -27,6 +27,7 @@ let switchBoop = new Audio('./used_sounds/Withdraw1.wav');
 let wompWomp = new Audio('./used_sounds/Transform.wav');
 let whisp = new Audio('./used_sounds/Payday1.wav');
 let bling = new Audio('./used_sounds/Payday2.wav');
+let blonk = new Audio('./used_sounds/CometPunchSingle.wav');
 
 // Get voice list
 function getVoices() {
@@ -80,6 +81,17 @@ function selected(elem) {
 }
 
 function savePokemon() {
+    if(pokemonObj == null){
+        wompWomp.play();
+            setTimeout(function() {
+                let speech3 = new SpeechSynthesisUtterance();
+                speech3.pitch = -1
+                speech3.voice = voices[voiceIdx]
+                speech3.text = `You must first select a pokemon.`;
+                window.speechSynthesis.speak(speech3);
+            }, 500);
+    return
+    }
     if (pokeSaves.length < 10) {
         let found = false
         for (let pokemon of pokeSaves) {
@@ -97,8 +109,8 @@ function savePokemon() {
                 window.speechSynthesis.speak(speech3);
             }, 500);
         } else {
-            favIdx++
             pokeSaves.push(pokemonObj);
+            favIdx = pokeSaves.length-1
             blueButtonsPics();
             bling.play();
         }
@@ -116,16 +128,36 @@ function savePokemon() {
 
 }
 
+function deleteFav(){
+    let buttons = document.querySelectorAll(".blue-button");
+    if(pokeSaves.length>0){
+        buttons[favIdx].classList.remove("selected-save");
+        buttons[favIdx].innerHTML = ""
+        pokeSaves.splice(favIdx, 1);
+        if(pokeSaves.length==0){
+            switchBoop.play();
+        }
+        if(pokeSaves.length!=0){
+            favDown();
+        }
+        return
+    }
+    else if(pokeSaves.length == 0){
+        blonk.play()
+    }
+}
+
 function blueButtonsPics() {
     let buttons = document.querySelectorAll(".blue-button");
     for (let i in buttons) {
+        buttons[i].innerHTML = "";
         if (i < pokeSaves.length) {
+            buttons[i].classList.remove("selected-save");
             if (pokeSaves[i].id == pokemonObj.id) {
                 buttons[i].classList.add("selected-save")
                 buttons[i].innerHTML = `<img onclick="switchToFav(${i})" class="fav-save" src="${pokeSaves[i].sprites[0]}" alt="" >`
             } else {
                 buttons[i].innerHTML = `<img onclick="switchToFav(${i})" class="fav-save" src="${pokeSaves[i].sprites[0]}" alt="" >`
-                buttons[i].classList.remove("selected-save");
             }
         }
     }
@@ -138,6 +170,7 @@ function switchToFav(idx) {
         imgIdx = 0;
         imgArr = []
         imgArr = pokemonObj.sprites;
+        lcdIdx = 0;
         build();
         blueButtonsPics();
         switchBoop.play();
@@ -145,6 +178,10 @@ function switchToFav(idx) {
 }
 
 function favUp(){
+        if(pokeSaves.length == 0){
+            blonk.play()
+            return
+        }
         favIdx++
         if(favIdx > pokeSaves.length -1){
             favIdx = 0
@@ -159,6 +196,10 @@ function favUp(){
 }
 
 function favDown(){
+    if(pokeSaves.length == 0){
+        blonk.play()
+        return
+    }
     favIdx--
     if(favIdx < 0){
         favIdx = pokeSaves.length-1
@@ -166,7 +207,9 @@ function favDown(){
     pokemonObj = pokeSaves[favIdx];
     imgIdx = 0;
     imgArr = []
-    imgArr = pokemonObj.sprites;
+    if(pokemonObj!=null){
+        imgArr = pokemonObj.sprites;
+    }
     build();
     blueButtonsPics();
     switchBoop.play();
@@ -193,7 +236,6 @@ class Pokemon {
         this.evolutionListIdx = this.getEvoIdx()
         this.pokedexEntry = this.createEntry(data);
         this.officialEntry = data.officialEntry;
-        console.log(this)
     }
 
     createEntry(pokeData) {
@@ -289,41 +331,42 @@ class Pokemon {
 
 //Build Pokemon specfic html
 function build() {
-    pokeScreen.innerHTML = `<img class="poke-img" src="${pokemonObj.sprites[imgIdx]}" alt="">`
-
-    lcd.innerHTML = `
-    <h1>Name: ${pokemonObj.name.charAt(0).toUpperCase() + pokemonObj.name.substring(1)}</h1>
-    <h2>ID: ${pokemonObj.id}</h2>`
-    lcd.innerHTML += `<h3 class="inline">Type/s: </h3>`
-    for (let type of pokemonObj.types) {
-        lcd.innerHTML += `<h3 class="inline">${type.type.name} </h3> `
-    }
-
-    lcd.innerHTML += `
-        <div class="flex-wrap">
-            <h3>Height:${pokemonObj.height / 10}m</h3>
-            <h3>Weight:${pokemonObj.weight}kg</h3>
-        </div>
-        `
-    console.log(pokemonObj.stats)
-    rightLcd.innerHTML = ""
-    for (let i in pokemonObj.evolutionList) {
-        if (pokemonObj.evolutionList[i].level != 0 && pokemonObj.evolutionList[i].level != null) {
-            rightLcd.innerHTML += `<div class="vert-flex"><h1 class="big-text">➡</h1><h4>Lvl: ${pokemonObj.evolutionList[i].level}</h4>`
-        } else if (i != 0) {
-            if (pokemonObj.evolutionList[i].item != null) {
-                rightLcd.innerHTML += `<div class="vert-flex"><h1 class="big-text">➡</h1><p>${pokemonObj.evolutionList[i].item.name}</p>`
-            }else if(pokemonObj.evolutionList[i].trigger !=null){
-                rightLcd.innerHTML += `<div class="vert-flex"><h1 class="big-text">➡</h1><h4>${pokemonObj.evolutionList[i].trigger}</h4>`
-            }
-            else {
-                rightLcd.innerHTML += `<div class="vert-flex"><h1 class="big-text">➡</h1><h4>???</h4>`
-            }
+    if(pokemonObj!=null){
+        pokeScreen.innerHTML = `<img class="poke-img" src="${pokemonObj.sprites[imgIdx]}" alt="">`
+    
+        lcd.innerHTML = `
+        <h1>Name: ${pokemonObj.name.charAt(0).toUpperCase() + pokemonObj.name.substring(1)}</h1>
+        <h2>ID: ${pokemonObj.id}</h2>`
+        lcd.innerHTML += `<h3 class="inline">Type/s: </h3>`
+        for (let type of pokemonObj.types) {
+            lcd.innerHTML += `<h3 class="inline">${type.type.name} </h3> `
         }
-        if (pokemonObj.evolutionList[i].name == pokemonObj.name) {
-            rightLcd.innerHTML += `<div class="evo-pics-current" ><img class="poke-img-small" src="${pokemonObj.evolutionList[i].sprite}" alt="picture"><h3>ID:${pokemonObj.evolutionList[i].id}</h3><h3>${pokemonObj.evolutionList[i].name.charAt(0).toUpperCase() + pokemonObj.evolutionList[i].name.substring(1)}</h3></div>`
-        } else {
-            rightLcd.innerHTML += `<div class="evo-pics" ><img class="poke-img-small" src="${pokemonObj.evolutionList[i].sprite}" alt="picture"><h3>ID:${pokemonObj.evolutionList[i].id}</h3><h3>${pokemonObj.evolutionList[i].name.charAt(0).toUpperCase() + pokemonObj.evolutionList[i].name.substring(1)}</h3></div>`
+    
+        lcd.innerHTML += `
+            <div class="flex-wrap">
+                <h3>Height:${pokemonObj.height / 10}m</h3>
+                <h3>Weight:${pokemonObj.weight}kg</h3>
+            </div>
+            `
+        rightLcd.innerHTML = ""
+        for (let i in pokemonObj.evolutionList) {
+            if (pokemonObj.evolutionList[i].level != 0 && pokemonObj.evolutionList[i].level != null) {
+                rightLcd.innerHTML += `<div class="vert-flex"><h1 class="big-text">➡</h1><h4>Lvl: ${pokemonObj.evolutionList[i].level}</h4>`
+            } else if (i != 0) {
+                if (pokemonObj.evolutionList[i].item != null) {
+                    rightLcd.innerHTML += `<div class="vert-flex"><h1 class="big-text">➡</h1><p>${pokemonObj.evolutionList[i].item.name}</p>`
+                }else if(pokemonObj.evolutionList[i].trigger !=null){
+                    rightLcd.innerHTML += `<div class="vert-flex"><h1 class="big-text">➡</h1><h4>${pokemonObj.evolutionList[i].trigger}</h4>`
+                }
+                else {
+                    rightLcd.innerHTML += `<div class="vert-flex"><h1 class="big-text">➡</h1><h4>???</h4>`
+                }
+            }
+            if (pokemonObj.evolutionList[i].name == pokemonObj.name) {
+                rightLcd.innerHTML += `<div class="evo-pics-current" ><img class="poke-img-small" src="${pokemonObj.evolutionList[i].sprite}" alt="picture"><h3>ID:${pokemonObj.evolutionList[i].id}</h3><h3>${pokemonObj.evolutionList[i].name.charAt(0).toUpperCase() + pokemonObj.evolutionList[i].name.substring(1)}</h3></div>`
+            } else {
+                rightLcd.innerHTML += `<div class="evo-pics" ><img class="poke-img-small" src="${pokemonObj.evolutionList[i].sprite}" alt="picture"><h3>ID:${pokemonObj.evolutionList[i].id}</h3><h3>${pokemonObj.evolutionList[i].name.charAt(0).toUpperCase() + pokemonObj.evolutionList[i].name.substring(1)}</h3></div>`
+            }
         }
     }
 }
@@ -345,9 +388,9 @@ async function catchPokemon() {
     let responseEvo = await fetch(responseSpecies.evolution_chain.url);
     responseEvo = await responseEvo.json();
 
-    console.log(response);
-    console.log(responseSpecies);
-    console.log(responseEvo)
+    // console.log(response);
+    // console.log(responseSpecies);
+    // console.log(responseEvo);
     // Build sprite array
     for (let imgKey in response.sprites) {
         if (response.sprites[imgKey] != null && typeof (response.sprites[imgKey]) == "string") {
@@ -364,7 +407,6 @@ async function catchPokemon() {
                 imgArr[1] = response.sprites[imgKey]
             }
         }
-        console.log(imgArr)
     }
 
 
