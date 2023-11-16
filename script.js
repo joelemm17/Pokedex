@@ -18,6 +18,7 @@ let voices = [];
 let pokeSaves = [];
 let voiceIdx = 1;
 let lcdIdx = 0;
+let favIdx = -1;
 let pokemonObj;
 
 // Create Audio elements
@@ -25,6 +26,7 @@ let beepboop = new Audio('./used_sounds/Withdraw.wav');
 let switchBoop = new Audio('./used_sounds/Withdraw1.wav');
 let wompWomp = new Audio('./used_sounds/Transform.wav');
 let whisp = new Audio('./used_sounds/Payday1.wav');
+let bling = new Audio('./used_sounds/Payday2.wav');
 
 // Get voice list
 function getVoices() {
@@ -49,7 +51,8 @@ async function getNames() {
 
 function search() {
     let input = inputElem.value;
-    if (input.length < 2) {
+    if (input.length == 0) {
+        nameDrop.innerHTML = ""
         return
     }
     let max = 4;
@@ -94,17 +97,21 @@ function savePokemon() {
                 window.speechSynthesis.speak(speech3);
             }, 500);
         } else {
+            favIdx++
             pokeSaves.push(pokemonObj);
-            blueButtonsPics()
+            blueButtonsPics();
+            bling.play();
         }
     }
     else {
         wompWomp.play();
-        let speech2 = new SpeechSynthesisUtterance();
-        speech2.pitch = -1
-        speech2.voice = voices[voiceIdx]
-        speech2.text = "No more room, you must delete a favorited pokemon.";
-        window.speechSynthesis.speak(speech2);
+        setTimeout(function(){
+            let speech2 = new SpeechSynthesisUtterance();
+            speech2.pitch = -1
+            speech2.voice = voices[voiceIdx]
+            speech2.text = "No more room, you must delete a favorited pokemon.";
+            window.speechSynthesis.speak(speech2);
+        }, 500);
     }
 
 }
@@ -125,13 +132,46 @@ function blueButtonsPics() {
 }
 
 function switchToFav(idx) {
+    favIdx = idx;
     if(pokemonObj.id!=pokeSaves[idx].id){
         pokemonObj = pokeSaves[idx];
+        imgIdx = 0;
+        imgArr = []
+        imgArr = pokemonObj.sprites;
         build();
         blueButtonsPics();
         switchBoop.play();
     }
 }
+
+function favUp(){
+        favIdx++
+        if(favIdx > pokeSaves.length -1){
+            favIdx = 0
+        }
+        pokemonObj = pokeSaves[favIdx];
+        imgIdx = 0;
+        imgArr = []
+        imgArr = pokemonObj.sprites;
+        build();
+        blueButtonsPics();
+        switchBoop.play();
+}
+
+function favDown(){
+    favIdx--
+    if(favIdx < 0){
+        favIdx = pokeSaves.length-1
+    }
+    pokemonObj = pokeSaves[favIdx];
+    imgIdx = 0;
+    imgArr = []
+    imgArr = pokemonObj.sprites;
+    build();
+    blueButtonsPics();
+    switchBoop.play();
+}
+
 
 // Defining a pokemon obj to combine multiple api responses into a single obj
 class Pokemon {
@@ -144,6 +184,11 @@ class Pokemon {
         this.abilities = data.abilities;
         this.sprites = data.sprites;
         this.stats = this.buildStats(data.stats);
+        this.captureRate = data.captureRate;
+        this.eggGroup = data.eggGroup;
+        this.growthRate = data.growthRate;
+        this.habitat = data.habitat;
+        this.baseHappiness = data.baseHappiness;
         this.evolutionList = this.evolutionList(data.evolvesTo);
         this.evolutionListIdx = this.getEvoIdx()
         this.pokedexEntry = this.createEntry(data);
@@ -203,10 +248,10 @@ class Pokemon {
         while (runner.evolves_to) {
             if (runner.evolution_details[0]) {
                 // console.log("name:"+runner.species.name+",  url:" + runner.species.url + ", level: " + runner.evolution_details[0].min_level)
-                evoList.push({ name: runner.species.name, url: runner.species.url, level: runner.evolution_details[0].min_level, id: runner.species.url.replace(/\D/g, '').substring(1), item: runner.evolution_details[0].item });
+                evoList.push({ name: runner.species.name, url: runner.species.url, level: runner.evolution_details[0].min_level, id: runner.species.url.replace(/\D/g, '').substring(1), item: runner.evolution_details[0].item, trigger: runner.evolution_details[0].trigger.name  });
             } else {
                 // console.log("name:"+runner.species.name+",  url:" + runner.species.url + ", level: 1")
-                evoList.push({ name: runner.species.name, url: runner.species.url, level: 0, id: runner.species.url.replace(/\D/g, '').substring(1), item: null })
+                evoList.push({ name: runner.species.name, url: runner.species.url, level: 0, id: runner.species.url.replace(/\D/g, '').substring(1), item: null, trigger: null })
             }
             if (runner.evolves_to[0]) {
                 runner = runner.evolves_to[0];
@@ -268,7 +313,10 @@ function build() {
         } else if (i != 0) {
             if (pokemonObj.evolutionList[i].item != null) {
                 rightLcd.innerHTML += `<div class="vert-flex"><h1 class="big-text">➡</h1><p>${pokemonObj.evolutionList[i].item.name}</p>`
-            } else {
+            }else if(pokemonObj.evolutionList[i].trigger !=null){
+                rightLcd.innerHTML += `<div class="vert-flex"><h1 class="big-text">➡</h1><h4>${pokemonObj.evolutionList[i].trigger}</h4>`
+            }
+            else {
                 rightLcd.innerHTML += `<div class="vert-flex"><h1 class="big-text">➡</h1><h4>???</h4>`
             }
         }
@@ -286,6 +334,7 @@ async function catchPokemon() {
     imgArr = [];
     evoArr = [];
     imgIdx = 0;
+    lcdIdx = 0;
     let pokeData = {}
     let pokemon = inputElem.value;
 
@@ -297,17 +346,25 @@ async function catchPokemon() {
     responseEvo = await responseEvo.json();
 
     console.log(response);
-    console.log(responseSpecies)
+    console.log(responseSpecies);
+    console.log(responseEvo)
     // Build sprite array
     for (let imgKey in response.sprites) {
         if (response.sprites[imgKey] != null && typeof (response.sprites[imgKey]) == "string") {
             if (imgKey == "front_default") {
-                imgArr.unshift(response.sprites[imgKey])
+                imgArr[0] = response.sprites[imgKey]
             }
-            else {
-                imgArr.push(response.sprites[imgKey])
+            else if (imgKey == "back_default"){
+                imgArr[3] = response.sprites[imgKey]
+            }
+            else if (imgKey == "front_shiny"){
+                imgArr[2] = response.sprites[imgKey]
+            }
+            else if (imgKey == "back_shiny"){
+                imgArr[1] = response.sprites[imgKey]
             }
         }
+        console.log(imgArr)
     }
 
 
@@ -324,7 +381,12 @@ async function catchPokemon() {
     pokeData.baseHappiness = responseSpecies.base_happiness;
     pokeData.eggGroup = responseSpecies.egg_groups;
     pokeData.growthRate = responseSpecies.growth_rate.name;
-    pokeData.habitat = responseSpecies.habitat.name;
+    if(responseSpecies.habitat){
+        pokeData.habitat = responseSpecies.habitat.name;
+    }else{
+        pokeData.habitat = null;
+
+    }
     pokeData.evolvesTo = responseEvo;
     pokeData.officialEntry = responseSpecies.flavor_text_entries[1].flavor_text.replace(/(\r\n|\f|\n|\r)/gm, " ");
     pokemonObj = new Pokemon(pokeData);
@@ -332,9 +394,23 @@ async function catchPokemon() {
     build();
 }
 
-function dynamicLcd() {
+function dynamicLcd(){
     lcd.innerHTML = ""
-    if (lcdIdx == 1) {
+    if(lcdIdx == 0){
+        lcd.innerHTML = `
+        <h1>Name: ${pokemonObj.name.charAt(0).toUpperCase() + pokemonObj.name.substring(1)}</h1>
+        <h2>ID: ${pokemonObj.id}</h2>`
+        lcd.innerHTML += `<h3 class="inline">Type/s: </h3>`
+        for (let type of pokemonObj.types) {
+            lcd.innerHTML += `<h3 class="inline">${type.type.name} </h3> `
+        }
+        lcd.innerHTML += `
+            <div class="flex-wrap">
+            <h3>Height:${pokemonObj.height / 10}m</h3>
+            <h3>Weight:${pokemonObj.weight}kg</h3>
+            </div>
+            `
+    }else if(lcdIdx == 1){
         lcd.innerHTML = `
             <div class="flex-wrap">
                 <h3 class="small-font">Atttack: Base-${pokemonObj.stats.attack.base} Effort-${pokemonObj.stats.attack.effort}</h3>
@@ -354,21 +430,36 @@ function dynamicLcd() {
             <div class="flex-wrap">
                 <h3 class="small-font">Speed: Base-${pokemonObj.stats.speed.base} Effort-${pokemonObj.stats.speed.effort}</h3>
             </div>`
-    }
-    else if (lcdIdx == 0) {
+    }else if(lcdIdx == 2){
         lcd.innerHTML = `
-        <h1>Name: ${pokemonObj.name.charAt(0).toUpperCase() + pokemonObj.name.substring(1)}</h1>
-        <h2>ID: ${pokemonObj.id}</h2>`
-        lcd.innerHTML += `<h3 class="inline">Type/s: </h3>`
-        for (let type of pokemonObj.types) {
-            lcd.innerHTML += `<h3 class="inline">${type.type.name} </h3> `
-        }
-        lcd.innerHTML += `
             <div class="flex-wrap">
-            <h3>Height:${pokemonObj.height / 10}m</h3>
-            <h3>Weight:${pokemonObj.weight}kg</h3>
+                <h3>Capture Rate: ${pokemonObj.captureRate}</h3>
             </div>
-            `
+            <div class="flex-wrap">
+                <h3>Base Happiness: ${pokemonObj.baseHappiness}</h3>
+            </div>
+            <div class="flex-wrap">
+                <h3>Growth Rate: ${pokemonObj.growthRate}</h3>
+            </div>`
+            if(pokemonObj.habitat){
+                lcd.innerHTML += `
+                <div class="flex-wrap">
+                <h3>Habitat: ${pokemonObj.habitat}</h3>
+                </div>`
+            }else(
+                lcd.innerHTML += `
+                <div class="flex-wrap">
+                <h3>Habitat: N/A</h3>
+                </div>`
+            )
+        lcd.innerHTML += `
+                <h3 class="inline">Egg Groups:</h3>`
+            for(let group of pokemonObj.eggGroup){
+                lcd.innerHTML += `<h3 class="inline">${group.name}</h3> `
+            }
+    }else if(lcdIdx == 3){
+        lcd.innerHTML = `
+        <h3>${pokemonObj.officialEntry}</h3>`
     }
 }
 
@@ -392,18 +483,18 @@ function picRight() {
     whisp.play()
 }
 
-function arrowDown() {
+function arrowUp() {
     lcdIdx--
     if (lcdIdx < 0) {
-        lcdIdx = 1
+        lcdIdx = 3
     }
     dynamicLcd();
     whisp.play()
 }
 
-function arrowUp() {
+function arrowDown() {
     lcdIdx++
-    if(lcdIdx > 1){
+    if(lcdIdx > 3){
         lcdIdx = 0
     }
     dynamicLcd();

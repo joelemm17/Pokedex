@@ -210,9 +210,11 @@ body{
 
 .black-button{
     background-color: black;
-    height: 2vh;
+    height: 4vh;
     width: 8vh;
     border-radius: 10px;
+    color:aliceblue;
+    font-size: 150%;;
 }
 
 .yellow-button{
@@ -288,7 +290,7 @@ body{
     background-color: rgba(31, 139, 201, 0.738);
 }
 .list-option{
-    width: 10vw;
+
     height: 5vh;
     display: flex;
     justify-content: center;
@@ -298,7 +300,7 @@ body{
     border-bottom: 3px solid white ;
 }
 .list-option-last{
-    width: 10vw;
+
     height: 5vh;
     display: flex;
     justify-content: center;
