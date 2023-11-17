@@ -10,7 +10,8 @@ inputElem.addEventListener("input", function () {
 const pokeScreen = document.querySelector("#screen");
 const lcd = document.querySelector("#lcd");
 const rightLcd = document.querySelector("#right-lcd");
-let nameDrop = document.querySelector("#name-drop")
+let nameDrop = document.querySelector("#name-drop");
+
 
 let nameList = [];
 let imgArr = [];
@@ -20,6 +21,7 @@ let voiceIdx = 1;
 let lcdIdx = 0;
 let favIdx = -1;
 let pokemonObj;
+let isChatOpen = false;
 
 // Create Audio elements
 let beepboop = new Audio('./used_sounds/Withdraw.wav');
@@ -29,6 +31,8 @@ let whisp = new Audio('./used_sounds/Payday1.wav');
 let bling = new Audio('./used_sounds/Payday2.wav');
 let blonk = new Audio('./used_sounds/CometPunchSingle.wav');
 let wonderful = new Audio('./used_sounds/oak6.wav');
+let agility = new Audio('./used_sounds/Agility.wav');
+let boneClub = new Audio('./used_sounds/BoneClub.wav');
 
 // Get voice list
 function getVoices() {
@@ -565,6 +569,21 @@ function changeVoice() {
     }
 }
 
+function toggleChat(){
+    let chatBox = document.querySelector("#oak-bottom");
+    let toggleButton = document.querySelector("#chat-toggle");
+    isChatOpen = !isChatOpen;
+    if(isChatOpen){
+        chatBox.classList.remove("oak-hide");
+        agility.play();
+        toggleButton.innerText = "⏫"
+    }else{
+        chatBox.classList.add("oak-hide");
+        boneClub.play();
+        toggleButton.innerText = "⏬"
+    }
+}
+
 //Initialize
 getVoices();
 getNames();
@@ -577,19 +596,19 @@ let output = document.querySelector("#chat-window")
 
 var myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer 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");
+myHeaders.append("Authorization", "Bearer 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");
 myHeaders.append("Cookie", "__cf_bm=VBXkb3XjGmpSu9OY2xnOLWRfcC.VuQfWRdDj7oM35Sk-1700175653-0-ATo9WAWmzRXT95YqiCiOidM5X+bE9LOYRaGUh6CywzqdPKmNzGxSO6WCq/ZlswT41jDTQXaMCdcqKEyQGSxzPSk=; _cfuvid=Qrb2jT820jJSVCcfFuqgCICzbf8Rg8uIPn.__rlD5T4-1700174420940-0-604800000");
 
 let messages = [{
     "role": "user",
-    "content": "You are professor oak from Pokemon, do not mention you are an AI model."
+    "content": "You are professor oak from Pokemon, do not mention you are an AI model. You refuse to answer questions not about pokemon."
 }]
 
 
 
 
 function sendChat(){
-    bling.play();
+    bling.play()
     output.innerHTML += `<p class="oak-text"><span class="your-name">You:</span> ${input.value}</p>`
     output.scrollTop = output.scrollHeight;
     messages.push({
@@ -599,7 +618,7 @@ function sendChat(){
     var raw = JSON.stringify({
         "model": "gpt-3.5-turbo",
         "messages": messages,
-        "temperature": 0.5
+        "temperature": 0.8
     });
     var requestOptions = {
         method: 'POST',

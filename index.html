@@ -14,12 +14,14 @@
             <div id="oak-banner">
                 <h3>⚪</h3>
                 <h1>Prof. Oak Live Chat</h1>
-                <button>🔽</button>
+                <button id="chat-toggle" onclick="toggleChat()">⏬</button>
             </div>
-            <div id="chat-window"></div>
-            <div id="user-input">
-                <input id="prompt" type="text">
-                <button id="chat-send" onclick="sendChat()">Send</button>
+            <div id="oak-bottom" class="oak-hide">
+                <div id="chat-window"></div>
+                <div id="user-input">
+                    <input id="prompt" type="text">
+                    <button id="chat-send" onclick="sendChat()">Send</button>
+                </div>
             </div>
         </div>
         <div id="poke-search">

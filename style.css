@@ -502,14 +502,17 @@ body {
     background-color: rgb(31, 139, 201);
     display: flex;
     justify-content: space-between;
-    height: 3vh;
     padding: 3px 5px;
     align-items: center;
     color: white;
     font-family: poke;
+    width: 20vw;
 }
 
 #oak-chat {
+    position: absolute;
+    top: 2.2vh;
+    left: 12.2vw;
     display: flex;
     flex-direction: column;
     border: 5px solid rgb(31, 139, 201);
@@ -518,6 +521,10 @@ body {
 #prompt {
     width: 85%;
     height: 3vh;
+    font-weight: bolder;
+    font-size: 120%;
+    font-family: 'IBM Plex Mono', monospace;
+    padding: 0px 5px;
 }
 
 #user-input {
@@ -526,12 +533,16 @@ body {
     background-color: rgb(31, 139, 201);
     padding: 5px 0px 0px 0px;
     align-items: center;
+    gap:5px;
 }
 
+.oak-hide{
+    display: none;
+}
 #chat-window {
-    width: 20vw;
     height: 60vh;
-    border: 3px solid rgb(255, 255, 255);
+    width: 20vw;
+    border: 3px solid rgb(152, 152, 152);
     background-color: rgb(250, 250, 250);
     overflow: scroll;
     padding: 0px 10px;
@@ -539,6 +550,12 @@ body {
 #chat-send{
     height: 3vh;
     width: 3vw;
+    font-weight: bolder;
+    font-size: 120%;
+    font-family: 'IBM Plex Mono', monospace;
+}
+#chat-toggle{
+    font-size: 130%;
 }
 .oak-name{
     color: red
