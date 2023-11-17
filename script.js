@@ -596,7 +596,7 @@ let output = document.querySelector("#chat-window")
 
 var myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer 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");
+myHeaders.append("Authorization", "Bearer ");
 myHeaders.append("Cookie", "__cf_bm=VBXkb3XjGmpSu9OY2xnOLWRfcC.VuQfWRdDj7oM35Sk-1700175653-0-ATo9WAWmzRXT95YqiCiOidM5X+bE9LOYRaGUh6CywzqdPKmNzGxSO6WCq/ZlswT41jDTQXaMCdcqKEyQGSxzPSk=; _cfuvid=Qrb2jT820jJSVCcfFuqgCICzbf8Rg8uIPn.__rlD5T4-1700174420940-0-604800000");
 
 let messages = [{
