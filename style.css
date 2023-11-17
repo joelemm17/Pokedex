@@ -5,16 +5,18 @@
 
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@700&display=swap');
 
-*{
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    
+
 }
-body{
+
+body {
     background-color: rgb(45, 41, 41);
 }
-#main{
+
+#main {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -23,93 +25,97 @@ body{
     padding: 20px;
     background-color: rgb(45, 41, 41);
 }
-#poke-search{
+
+#poke-search {
     display: flex;
     gap: 10px;
 }
-#search-select{
+
+#search-select {
     font-size: 150%;
-    background-color: rgb(40,171,248); 
+    background-color: rgb(40, 171, 248);
     color: white;
     font-family: poke;
 
 }
-#poke-input{
+
+#poke-input {
     width: 20vw;
     height: 5vh;
     font-size: 150%;
     padding: 10px;
     font-family: poke;
-} 
+}
 
 
-#poke-button{
-    background-color: rgb(40,171,248);
+#poke-button {
+    background-color: rgb(40, 171, 248);
     color: aliceblue;
-    font-size:200%;
+    font-size: 200%;
     border-radius: 5px;
     padding: 5px 10px;
     font-family: poke;
 }
 
-#pokedex{
-    display:flex;
-    align-items:end;
+#pokedex {
+    display: flex;
+    align-items: end;
 }
 
-#pokedex-left{
+#pokedex-left {
     display: flex;
     flex-direction: column;
     height: 80vh;
-    width:700px;
+    width: 700px;
     background-color: rgb(186, 32, 32);
     border-radius: 20px;
     background-image: linear-gradient(to right, rgb(221, 24, 24), rgb(154, 23, 23));
 }
 
-#hinge{
+#hinge {
     display: flex;
     flex-direction: column;
     padding: 10px 0;
     justify-content: space-between;
     height: 60vh;
-    width:50px;
+    width: 50px;
     background-color: rgb(186, 32, 32);
     border-radius: 5px;
     margin: 20px 0;
     background-image: linear-gradient(to right, rgb(221, 24, 24), rgb(92, 13, 13));
 }
 
-#pokedex-right{
+#pokedex-right {
     display: flex;
     flex-direction: column;
     height: 65vh;
-    width:700px;
+    width: 700px;
     padding: 30px;
     background-color: rgb(186, 32, 32);
     border-radius: 20px;
     background-image: linear-gradient(to left, rgb(221, 24, 24), rgb(154, 23, 23));
 }
 
-#top-bevel{
+#top-bevel {
     border-radius: 20px;
     background-color: rgb(45, 41, 41);
     font-family: poke;
 }
 
-#blue-button-panel{
-    flex:0.5;
+#blue-button-panel {
+    flex: 0.5;
     display: flex;
     flex-direction: column;
     gap: 10px;
     padding: 20px 20px;
 }
 
-.button-row{
+.button-row {
     display: flex;
     gap: 10px;
 }
-.blue-button{
+
+.blue-button {
     height: 8vh;
     flex: 1;
     padding: 5px;
@@ -117,18 +123,19 @@ body{
     border-radius: 5px;
     box-shadow: 2px 3px 3px rgb(95, 12, 12);
 }
-.selected-save{
+
+.selected-save {
     background-color: rgb(135, 197, 233);
 }
 
-#white-buttons{
+#white-buttons {
     display: flex;
     gap: 20px;
     padding: 10px 0;
     align-items: center;
 }
 
-.white-button{
+.white-button {
     background: white;
     height: 8vh;
     width: 8vh;
@@ -136,16 +143,16 @@ body{
     box-shadow: 2px 3px 3px rgb(95, 12, 12);
 }
 
-.small-lcd{
+.small-lcd {
     background: rgb(44, 44, 44);
     height: 7vh;
     width: 14vw;
     border-radius: 5px;
 }
 
-#right-lcd{
+#right-lcd {
     flex: 3;
-    background-color: rgb(81,173,96);
+    background-color: rgb(81, 173, 96);
     padding: 10px;
     border-radius: 5px;
     border: 3px solid rgba(87, 87, 87, 0.741);
@@ -156,27 +163,29 @@ body{
     color: rgb(33, 32, 32);
 }
 
-#mid-right{
-    flex:1;
+#mid-right {
+    flex: 1;
     display: flex;
     justify-content: space-between;
     padding: 0 20px;
 }
-#mid-right-right{
+
+#mid-right-right {
     display: flex;
     flex-direction: column;
     gap: 5vh;
     align-items: flex-end;
 }
-#bottom-right{
+
+#bottom-right {
     padding: 10px 0 0 0;
     flex: 1;
     display: flex;
-    gap:20px;
+    gap: 20px;
     justify-content: space-around;
 }
 
-#top-panel{
+#top-panel {
     display: flex;
     gap: 20px;
     padding: 20px 0;
@@ -187,37 +196,38 @@ body{
     font-family: poke;
 }
 
-#lens{
+#lens {
     height: 10vh;
     border-radius: 50%;
 }
 
-.red{
+.red {
     background-color: red;
 }
 
-.yellow{
+.yellow {
     background-color: yellow;
 }
 
-.green{
+.green {
     background-color: green;
 }
 
-.blue{
+.blue {
     background-color: rgb(31, 139, 201);
 }
 
-.black-button{
+.black-button {
     background-color: black;
     height: 4vh;
     width: 8vh;
     border-radius: 10px;
-    color:aliceblue;
-    font-size: 150%;;
+    color: aliceblue;
+    font-size: 150%;
+    ;
 }
 
-.yellow-button{
+.yellow-button {
     background-color: yellow;
     height: 4vh;
     width: 4vh;
@@ -229,56 +239,56 @@ body{
     padding-bottom: 2px;
 }
 
-.dark-red{
+.dark-red {
     background-color: rgb(95, 12, 12);
 }
-.poke-light{
+
+.poke-light {
     height: 25px;
     width: 25px;
     border-radius: 50%;
     border: 4px solid rgb(148, 147, 147);
     box-shadow: 2px 3px 3px rgb(95, 12, 12);
 }
-.big-light{
 
-}
+.big-light {}
 
-.poke-img{
+.poke-img {
     height: 250px;
     width: 250px;
 }
 
-.poke-img-small{
+.poke-img-small {
     height: 80px;
     width: 80px;
 }
 
-.fav-save{
+.fav-save {
     height: 70px;
     width: 70px;
 }
 
-.flex-wrap{
+.flex-wrap {
     display: flex;
     gap: 15px;
     align-items: center;
-} 
+}
 
-.small-font{
+.small-font {
     font-size: 95%;
     font-weight: bolder;
 }
 
-.evo-pics{
+.evo-pics {
     display: flex;
-    flex:2;
+    flex: 2;
     flex-direction: column;
     align-items: center;
     border: 3px solid rgba(53, 53, 53, 0.815);
     border-radius: 5px;
 }
 
-.evo-pics-current{
+.evo-pics-current {
     flex: 2;
     display: flex;
     flex-direction: column;
@@ -286,14 +296,16 @@ body{
     border: 3px solid rgba(124, 248, 86, 0.777);
     border-radius: 5px;
 }
-#name-drop{
+
+#name-drop {
     position: absolute;
     top: 2vh;
     left: 63vw;
     border-radius: 5px;
     background-color: rgba(31, 139, 201, 0.738);
 }
-.list-option{
+
+.list-option {
 
     height: 5vh;
     display: flex;
@@ -301,9 +313,10 @@ body{
     align-items: center;
     font-family: poke;
     color: rgb(255, 251, 251);
-    border-bottom: 3px solid white ;
+    border-bottom: 3px solid white;
 }
-.list-option-last{
+
+.list-option-last {
 
     height: 5vh;
     display: flex;
@@ -314,29 +327,31 @@ body{
 }
 
 
-.vert-flex{
+.vert-flex {
     display: flex;
     flex-direction: column;
     align-items: center;
     flex: 1;
 }
 
-.inline{
+.inline {
     display: inline;
 }
-.big-text{
+
+.big-text {
     font-size: 300%;
 }
-#mid-panel{
-    flex:5;
+
+#mid-panel {
+    flex: 5;
     padding: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#info-screen{
-    background-color: rgb(222,222,222);
+#info-screen {
+    background-color: rgb(222, 222, 222);
     background-image: linear-gradient(to right, rgb(222, 222, 222), rgb(159, 159, 159));
     width: 60%;
     height: 100%;
@@ -347,19 +362,19 @@ body{
     align-items: center;
 }
 
-#screen-top{
+#screen-top {
     padding: 10px;
-    flex:1;
+    flex: 1;
     justify-content: center;
     gap: 10px;
     display: flex;
     justify-content: center;
 }
 
-#screen{
+#screen {
     background-color: rgb(33, 32, 32);
     border: 3px solid rgba(87, 87, 87, 0.741);
-    
+
     height: 80%;
     width: 80%;
     border-radius: 3px;
@@ -367,48 +382,56 @@ body{
     justify-content: center;
     align-items: center;
 }
-#screen-bottom{
+
+#screen-bottom {
     padding: 10px;
     width: 85%;
     display: flex;
     justify-content: space-between;
 }
-#vent{
+
+#vent {
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
-.line{
+
+.line {
     height: 3px;
     width: 3vw;
     background-color: black;
 }
-.bar-light{
+
+.bar-light {
     height: 20px;
     width: 30%;
     color: white;
     font-size: 100%;
     font-family: poke;
 }
-#bottom-panel{
+
+#bottom-panel {
     display: flex;
-    flex:2;
+    flex: 2;
     justify-content: space-between;
     padding: 0px 20px;
 }
-#bot-left{
-    flex:1;
+
+#bot-left {
+    flex: 1;
     padding: 20px;
 }
-#bot-mid{
-    flex:5;
+
+#bot-mid {
+    flex: 5;
     display: flex;
     flex-direction: column;
-    gap:10px;
+    gap: 10px;
     align-items: center;
 }
-#bot-right{
-    flex:2;
+
+#bot-right {
+    flex: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -416,27 +439,28 @@ body{
 
 }
 
-#button-panel{
+#button-panel {
     display: flex;
     justify-content: space-between;
     width: 100%;
     gap: 80px;
 }
-#dpad-mid{
+
+#dpad-mid {
     display: flex;
 }
 
-#audio-button{
+#audio-button {
     background-color: rgb(18, 13, 13);
     height: 60px;
     width: 60px;
     border-radius: 50%;
-    font-size:200%;
+    font-size: 200%;
     box-shadow: 5px 5px 5px rgb(95, 12, 12);
 }
 
-#lcd{
-    background-color: rgb(81,173,96);
+#lcd {
+    background-color: rgb(81, 173, 96);
     padding-left: 10px;
     height: 70%;
     width: 100%;
@@ -446,10 +470,10 @@ body{
     color: rgb(33, 32, 32);
 }
 
-.direction-arrow{
+.direction-arrow {
     height: 45px;
     width: 45px;
-    background-color:rgb(33, 32, 32);
+    background-color: rgb(33, 32, 32);
     box-shadow: 3px 3px 3px rgb(95, 12, 12);
     color: rgb(104, 104, 104);
     font-size: 250%;
@@ -459,10 +483,10 @@ body{
     padding-bottom: 3px;
 }
 
-.center-arrow{
+.center-arrow {
     height: 45px;
     width: 45px;
-    background-color:rgb(33, 32, 32);
+    background-color: rgb(33, 32, 32);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -470,3 +494,61 @@ body{
     color: rgb(104, 104, 104);
 }
 
+#oak-img {
+    height: 20px;
+}
+
+#oak-banner {
+    background-color: rgb(31, 139, 201);
+    display: flex;
+    justify-content: space-between;
+    height: 3vh;
+    padding: 3px 5px;
+    align-items: center;
+    color: white;
+    font-family: poke;
+}
+
+#oak-chat {
+    display: flex;
+    flex-direction: column;
+    border: 5px solid rgb(31, 139, 201);
+}
+
+#prompt {
+    width: 85%;
+    height: 3vh;
+}
+
+#user-input {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(31, 139, 201);
+    padding: 5px 0px 0px 0px;
+    align-items: center;
+}
+
+#chat-window {
+    width: 20vw;
+    height: 60vh;
+    border: 3px solid rgb(255, 255, 255);
+    background-color: rgb(250, 250, 250);
+    overflow: scroll;
+    padding: 0px 10px;
+}
+#chat-send{
+    height: 3vh;
+    width: 3vw;
+}
+.oak-name{
+    color: red
+}
+.your-name{
+    color: blue;
+}
+.oak-text{
+    font-family: 'IBM Plex Mono', monospace;
+    margin-bottom: 10px;
+    font-weight: bolder;
+    font-size: 120%;
+}

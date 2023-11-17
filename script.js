@@ -28,6 +28,7 @@ let wompWomp = new Audio('./used_sounds/Transform.wav');
 let whisp = new Audio('./used_sounds/Payday1.wav');
 let bling = new Audio('./used_sounds/Payday2.wav');
 let blonk = new Audio('./used_sounds/CometPunchSingle.wav');
+let wonderful = new Audio('./used_sounds/oak6.wav');
 
 // Get voice list
 function getVoices() {
@@ -567,3 +568,57 @@ function changeVoice() {
 //Initialize
 getVoices();
 getNames();
+
+// *****************************************************************************************************************
+
+
+let input = document.querySelector("#prompt");
+let output = document.querySelector("#chat-window")
+
+var myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer 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");
+myHeaders.append("Cookie", "__cf_bm=VBXkb3XjGmpSu9OY2xnOLWRfcC.VuQfWRdDj7oM35Sk-1700175653-0-ATo9WAWmzRXT95YqiCiOidM5X+bE9LOYRaGUh6CywzqdPKmNzGxSO6WCq/ZlswT41jDTQXaMCdcqKEyQGSxzPSk=; _cfuvid=Qrb2jT820jJSVCcfFuqgCICzbf8Rg8uIPn.__rlD5T4-1700174420940-0-604800000");
+
+let messages = [{
+    "role": "user",
+    "content": "You are professor oak from Pokemon, do not mention you are an AI model."
+}]
+
+
+
+
+function sendChat(){
+    bling.play();
+    output.innerHTML += `<p class="oak-text"><span class="your-name">You:</span> ${input.value}</p>`
+    output.scrollTop = output.scrollHeight;
+    messages.push({
+        "role":"user", 
+        "content": input.value
+    })
+    var raw = JSON.stringify({
+        "model": "gpt-3.5-turbo",
+        "messages": messages,
+        "temperature": 0.5
+    });
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+    input.value = "";
+    fetch("https://api.openai.com/v1/chat/completions", requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            wonderful.play();
+            console.log(result.choices[0].message.content);
+            output.innerHTML += `<p class="oak-text"><span class="oak-name">Prof. Oak:</span> ${result.choices[0].message.content}</p>`
+            output.scrollTop = output.scrollHeight;
+            messages.push({
+                "role":"user", 
+                "content": result.choices[0].message.content
+            })
+        })
+        .catch(error => console.log('error', error));
+}
